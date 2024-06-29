@@ -1,0 +1,223 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap'); */
+
+@font-face {
+  font-family: 'Comic Neue';
+  src: url('src/fonts/subset-ComicNeue-Bold.woff2') format('woff2'),
+      url('src/fonts/subset-ComicNeue-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Courier Prime';
+  src: url('src/fonts/subset-CourierPrime-Bold.woff2') format('woff2'),
+      url('src/fonts/subset-CourierPrime-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+* >* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  outline: none;
+  /* -webkit-tap-highlight-color: rgba(255, 255, 255, 0); */ /* mobile webkit */
+  touch-action: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Comic Neue", sans-serif;
+  font-weight: 700;
+  text-shadow:0px 0px 5px #000;
+}
+
+canvas {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#frame{
+  position: absolute;
+  display: flex;
+  width: 100vh;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 91, 152);
+  pointer-events: none;  
+  width: 100%;
+  height: 100%;
+  z-index: 10001; /* to be on top of stats */
+  transition: background-color 0.3s ease-in;
+}
+
+#frame > *{
+  pointer-events: all;
+}
+
+#container{
+  /* position: relative; */
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 35vh;
+  gap: 20px;
+}
+
+#gameText{
+  font-size: 90px;
+  color: white;
+  -webkit-user-select: none;
+
+}
+
+
+.button{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  font-weight: inherit;
+  text-shadow: inherit;
+  box-shadow:0px 0px 5px #000;
+  color: white;
+  background-color: rgb(158, 185, 129);
+  border-radius: 25px;
+  border: 2px solid white;
+  cursor: pointer;
+  &:hover{/* for mouse */
+    background-color: rgb(119, 139, 98);
+  }
+  
+  &.hovered{/* for spacebar and enter keys*/
+    background-color: rgb(119, 139, 98) !important;
+  }
+}
+
+#playButton{
+  font-size: 70px;
+  padding: 10px 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+#timer{
+  display: flex;
+  font-size: 55px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+  margin-top: 20px;
+  padding: 0;
+  font-family: "Courier Prime", monospace;
+  line-height: 80%;
+}
+
+
+#audioButton{
+  -webkit-tap-highlight-color: transparent;
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  top: 15%;
+  font-size: 50px;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+#sound-on-icon {
+  display: none;
+  text-shadow: 0px 0px 5px #000;
+}
+
+#sound-off-icon {
+  display: block;
+  text-shadow: 0px 0px 5px #000;
+}
+
+#pauseButton{
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  background-color: transparent;
+  border: none;
+  font-size: 50px;
+  color: white;
+  cursor: pointer;
+  display: none;
+  opacity: 0.7;
+}
+
+#pause-icon {
+  display: block;
+  text-shadow: 0px 0px 5px #000;
+}
+
+
+#loader {
+  position: absolute;
+  top: 40%;
+  box-shadow: 0px 0px 15px #006fb9;
+  border: 8px solid #002d4b;
+  border-top: 8px solid #f3f3f3;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 600px) {
+  #gameText{
+     font-size: 15vw;
+  }
+  #playButton{
+    font-size: 10vw;
+  }
+  /* #timer{
+    font-size: 10vw;
+  } */
+  #audioButton{
+    /* font-size: 5vw; */
+  }
+}
+
+@media screen and (max-height: 600px) {
+  #gameText{
+     font-size: 10vh;
+  }
+  #playButton{
+    font-size: 7vh;
+  }
+  /* #timer{
+    font-size: 10vh;
+  } */
+  #audioButton{
+    /* font-size: 5vh; */
+  }
+}
+
+.d-none {
+  display: none !important;
+}
