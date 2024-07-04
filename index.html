@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dino Game</title>
+    <link rel="canonical" href="https://michelegranatiero.github.io/dinogame/" />
     <link rel="icon" href="images/favicon.ico">
-    <link  href="/style.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet"/>  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-    
-    
+    <link rel="manifest" href="manifest.json">
   </head>
   <body>
     <div id="frame" class="">
@@ -17,19 +17,53 @@
         <i class="bi-pause-fill" id="pause-icon"></i>
       </button>
       <div id="container">
-        <div id="loader"></div>
-        <div id="gameText">Dino Game</div>
-        <button id="playButton" class="button">Play</button>
         <button id="audioButton">
           <i class="bi-volume-up-fill" id="sound-on-icon"></i>
           <i class="bi-volume-mute-fill" id="sound-off-icon"></i>
         </button>
+        <div id="gameText">Dino Game</div>
+        <button id="playButton" class="button">Play</button>
+        <div id="loader"></div>
+        <div id="settings-wrapper">
+          <div id="fov-cont">
+            <span>Field of View:</span>
+            <div class="fov-radios">
+              <div>
+                <input type="radio" id="fov-far" name="fov" value="far">
+                <label for="fov-far">Far</label>
+              </div>
+              <div>
+                <input type="radio" id="fov-normal" name="fov" value="normal" checked>
+                <label for="fov-normal">Normal</label>
+              </div>
+              <div>
+                <input type="radio" id="fov-close" name="fov" value="close">
+                <label for="fov-close">Close</label>
+              </div>
+            </div>
+          </div>
+          <div class="shader-cont">
+            <input type="checkbox" id="shader" name="shader">
+            <label for="shader">Shader Switch</label>
+          </div>
+        </div>
       </div>
     </div>
     <canvas id="canvas"></canvas>
 
 
-
     <script type="module" src="/main.js"></script>
+    <!-- <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/dinogame/service-worker.js", { scope: '/dinogame/' })
+          .then((registration) => {
+            console.log("Service Worker registered:", registration);
+          })
+          .catch((error) => {
+            console.log("Service Worker registration failed:", error);
+          }
+        );
+      }
+    </script> -->
   </body>
 </html>

@@ -4,6 +4,7 @@ export function gameReady(scene){
   document.getElementById("frame").style.backgroundColor = "rgba(0, 91, 152, 0.8)";
   document.getElementById("playButton").style.opacity = "1";
   document.getElementById("audioButton").style.opacity = "1";
+  document.getElementById("settings-wrapper").style.opacity = "1";
   document.getElementById("timer").style.opacity = "1";
   document.getElementById("loader").style.display = "none";
   // remove transitions after intro screen
@@ -11,6 +12,8 @@ export function gameReady(scene){
     if (event.propertyName == "background-color"){
       document.getElementById("frame").style.transition=  "none";
       document.getElementById("playButton").style.transition=  "none";
+      document.getElementById("audioButton").style.transition = "none";
+      document.getElementById("settings-wrapper").style.transition=  "none";
       document.getElementById("timer").style.transition=  "none";
     }
   });
@@ -30,13 +33,14 @@ export function gameStart(scene){
   
   document.getElementById("frame").style.backgroundColor = "rgba(0, 0, 0, 0)";
   document.getElementById("container").style.visibility = "hidden";
-  document.getElementById("pauseButton").style.display = "flex"
+  document.getElementById("pauseButton").style.display = "flex";
 }
 
 export function gameOver(scene){
   scene.gameState = "gameover";
   scene.clock.stop();
   window.stopSound();
+  window.playCollisionSound();
   document.getElementById("frame").style.background = "rgba(0, 0, 0, 0.5)";
   document.getElementById("container").style.visibility = "visible";
   document.getElementById("playButton").innerHTML = "Play Again";
@@ -55,7 +59,7 @@ export function reset(scene){
   });
   for (let i = scene.groupAll.children.length - 1; i >= 0; i--) { //from last to first otherwise it will skip some elements
     const child = scene.groupAll.children[i];
-    if (child.name === "obstBox" || child.name === "plrBox") {
+    if (child.name.startsWith("obstBox") || child.name === "plrBox") {
       scene.groupAll.remove(child);
     }
   }

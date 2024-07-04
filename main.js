@@ -10,9 +10,11 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 renderer.setSize(width, height);
-//renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.setPixelRatio(window.devicePixelRatio);
-//renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+// renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+
 renderer.shadowMap.enabled = true;
 
 let scene;
@@ -25,18 +27,18 @@ animate();
 
 //audio
 let AUDIO_IS_ON = false;
-const audio = new Audio("sounds/stepsRun.mp3");
+const audio = new Audio("sounds/collisionSound.mp3");
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let audioContext
 let audioBuffer;
 let audioSource;
 
-loadAudio();
+
 
 /////////////////////////FUNCTIONS//////////////////////////////
 
 function newScene(){
-  mainCamera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  mainCamera = new THREE.PerspectiveCamera( 90, width / height, 0.1, 1000);
   
   scene = new GameScene();
   scene.initialize(mainCamera, renderer);
@@ -61,10 +63,19 @@ window.addEventListener("resize", () => {
 });
 
 // play button listeners
-document.getElementById("playButton").onclick = () => {
+document.getElementById("playButton").onclick = async() => {
+  audio.currentTime = 0;
+  audio.pause();
+  if (!audioContext){
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    await loadAudio();    
+  }
+
   Events.gameStart(scene);
   if (AUDIO_IS_ON) {
-    audioContext.resume().then(() => {
+    audioContext.resume().then(() => {   
+      console.log("wewe");
+         
       playLoop();
     });
     window.speedDefaultSound();
@@ -101,19 +112,39 @@ document.getElementById("pauseButton").onclick = () => {
   Events.pauseGame(scene);
 };
 
-/////////////////AUDIO////////////////////
-function loadAudio() {
-  fetch('sounds/stepsRun.mp3')
-    .then(response => response.arrayBuffer())
-    .then(data => audioContext.decodeAudioData(data))
-    .then(decodedData => {
-        audioBuffer = decodedData;
-    });
+//FOV radios listener
+document.getElementById("fov-far").onclick = () => {
+  mainCamera.fov = 115;
+  mainCamera.updateProjectionMatrix();
+};
+
+document.getElementById("fov-normal").onclick = () => {
+  mainCamera.fov = 90;
+  mainCamera.updateProjectionMatrix();
 }
 
-function playLoop() {
-    audio.play(); //needed for unlock audio on ios devices
-    audio.pause();
+document.getElementById("fov-close").onclick = () => {
+  mainCamera.fov = 75;
+  mainCamera.updateProjectionMatrix();
+}
+
+//shader checkbox listener
+document.getElementById("shader").onclick = () => {
+  //check if checkbox is checked
+  const checked = document.getElementById("shader").checked;
+  scene.threeShaderCallback(checked);
+  scene.GUIoptions.threeShader = checked;
+  scene.shaderGUIController.updateDisplay();
+}
+
+/////////////////AUDIO////////////////////
+async function loadAudio() {
+  const response = await fetch('sounds/stepsRun.mp3');
+  const data = await response.arrayBuffer();
+  audioBuffer = await audioContext.decodeAudioData(data);
+}
+
+function playLoop() {    
     audioSource = audioContext.createBufferSource();
     audioSource.buffer = audioBuffer;
     audioSource.loop = true;
@@ -142,6 +173,10 @@ window.speedDefaultSound = () => {
   if (audioSource) {
     audioSource.playbackRate.value = 1;
   }
+}
+
+window.playCollisionSound = () => {
+  if (AUDIO_IS_ON) audio.play();
 }
 
 document.getElementById("audioButton").onclick = () => {
