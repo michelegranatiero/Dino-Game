@@ -1,15 +1,13 @@
-
 @font-face {
-  font-family: 'Comic Neue';
-  src: url('/fonts/subset-ComicNeue-Bold.woff2') format('woff2'),
-      url('/fonts/subset-ComicNeue-Bold.woff') format('woff');
+  font-family: "Comic Neue";
+  src: url("/fonts/subset-ComicNeue-Bold.woff2") format("woff2"),
+    url("/fonts/subset-ComicNeue-Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
-
-* >* {
+* > * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -20,20 +18,19 @@
   outline: none;
   touch-action: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
-
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;
   font-family: "Comic Neue", sans-serif;
-  /* font-weight: 700; */
   font-weight: bold;
   font-style: normal;
-  text-shadow:0px 0px 5px #000;
+  text-shadow: 0px 0px 5px #000;
   color: white;
+  background-color: rgb(0, 91, 152);
 }
 
 canvas {
@@ -43,91 +40,88 @@ canvas {
   left: 0;
 }
 
-#frame{
-  position: absolute;
+#frame {
+  position: fixed;
   display: flex;
   flex-grow: 1;
   width: 100%;
   height: 100%;
   flex-direction: column;
   justify-content: start;
-  gap: 3vh;
+  gap: 3dvh;
   align-items: center;
   background-color: rgb(0, 91, 152);
-  pointer-events: none;  
-  /* width: 100%;
-  height: 100%; */
-  z-index: 10001; /* to be on top of stats */
+  pointer-events: none; /* without this can't not open controls */
+  z-index: 10001; /* to be on top of stats div */
   transition: background-color 0.3s ease-in;
+  overflow: hidden; /* for correct resizing */
 }
 
-#frame > *{
+#frame > * {
   pointer-events: all;
 }
 
-#container{
-  /* position: relative; */
+#container {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  gap: 2vh;
+  gap: 2dvh;
 }
 
-#gameText{
-  font-size: 90px;
+#gameText {
+  font-size: clamp(15px, (5dvh + 3dvw), 90px);
   color: white;
 }
 
-
-.button{
+.button {
   font-family: inherit;
   font-weight: inherit;
   text-shadow: inherit;
-  box-shadow:0px 0px 5px #000;
+  box-shadow: 0px 0px 5px #000;
   color: white;
   background-color: rgb(158, 185, 129);
-  border-radius: 25px;
+  border-radius: clamp(5px, (2.5dvh + 10px), 100px);
+
   border: 2px solid white;
   cursor: pointer;
-  &:hover{/* for mouse */
+  &:hover {
+    /* for mouse */
     background-color: rgb(119, 139, 98);
   }
-  
-  &.hovered{/* for spacebar and enter keys*/
+  &.hovered {
+    /* for spacebar and enter keys*/
     background-color: rgb(119, 139, 98) !important;
   }
 }
 
-#playButton{
-  font-size: 70px;
+#playButton {
+  font-size: clamp(20px, (6dvh + 4dvw), 90px);
   padding: 10px 20px;
   opacity: 0;
   transition: opacity 0.3s ease-in;
 }
 
-#timer{
+#timer {
   display: flex;
-  font-size: 55px;
+  font-size: clamp(50px, (4dvh + 3dvw), 55px);
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease-in;
-  margin-top: 20px;
+  margin-top: 4dvh;
   padding: 0;
-  font-family: /* "Consolas", */"Courier New", monospace;
+  font-family: "Courier New", monospace;
   font-weight: bold;
   line-height: 80%;
 }
 
-
-#audioButton{
+#audioButton {
   -webkit-tap-highlight-color: transparent;
-  /* position: absolute; */
   background-color: transparent;
   border: none;
-  margin-top: 10vh;
-  font-size: 50px;
+  margin-top: 10dvh;
+  font-size: clamp(30px, (4dvh + 3dvw), 70px);
   color: white;
   cursor: pointer;
   opacity: 0;
@@ -143,12 +137,12 @@ canvas {
   text-shadow: 0px 0px 5px #000;
 }
 
-#pauseButton{
+#pauseButton {
   -webkit-tap-highlight-color: transparent;
   display: flex;
   background-color: transparent;
   border: none;
-  font-size: 50px;
+  font-size: clamp(30px, (4dvh + 3dvw), 70px);
   color: white;
   cursor: pointer;
   display: none;
@@ -160,10 +154,9 @@ canvas {
   text-shadow: 0px 0px 5px #000;
 }
 
-
 #loader {
   position: absolute;
-  top: 50vh;
+  top: 50dvh;
   box-shadow: 0px 0px 15px #006fb9;
   border: 8px solid #002d4b;
   border-top: 8px solid #f3f3f3;
@@ -173,7 +166,7 @@ canvas {
   animation: spin 2s linear infinite;
 }
 
-#settings-wrapper{
+#settings-wrapper {
   transition: opacity 0.3s ease-in;
   opacity: 0;
   display: flex;
@@ -181,31 +174,31 @@ canvas {
   align-items: center;
   justify-content: end;
   flex-grow: 1;
-  margin-bottom: 10vh;
+  margin-bottom: 5dvh;
   width: 100%;
-  gap: 10px;
+  gap: 1dvh;
+  font-size: clamp(20px, (1.5dvh + 1dvw), 25px);
 }
 
 #fov-cont {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 20px;
-  gap: 15px;
+  padding: clamp(10px, 2dvh, 40px) clamp(10px, 2dvh, 40px);
+  gap: calc(2dvh + 10px);
   background-color: #ffffff37;
-  border-radius: 20px;
+  border-radius: clamp(5px, (2.5dvh + 10px), 100px);
 
-  >span{
-    font-size: 25px;
+  > span {
+    font-size: clamp(35px, (3dvh + 1.5dvw), 40px);
     color: white;
   }
 
-  label{
+  label {
     padding: 4px 8px;
-    border-radius: 10px;
+    border-radius: clamp(0px, (1.5dvh + 5px), 100px);
     cursor: pointer;
-    font-size: 18px;
-    border: 2px solid white;
+    border: 0.3dvh solid white;
   }
 
   input[type="radio"] {
@@ -215,30 +208,22 @@ canvas {
     }
   }
 
-  .fov-radios{
+  .fov-radios {
     display: flex;
     gap: 30px;
   }
-  
 }
 
-.shader-cont{
-  padding: 20px 20px;
-  gap: 15px;
+.shader-cont {
+  padding: clamp(10px, 3dvh, 40px) clamp(10px, 3dvh, 40px);
   background-color: #ffffff37;
-  border-radius: 20px;
+  border-radius: clamp(5px, (2dvh + 7px), 100px);
 
-  >span{
-    font-size: 25px;
-    color: white;
-  }
-
-  label{
+  label {
     padding: 4px 8px;
-    border-radius: 10px;
+    border-radius: clamp(0px, (1.5dvh + 5px), 100px);
     cursor: pointer;
-    font-size: 18px;
-    border: 2px solid white;
+    border: 0.3dvh solid white;
   }
 
   input[type="checkbox"] {
@@ -247,51 +232,42 @@ canvas {
       background-color: rgb(158, 185, 129);
     }
   }
-
-  .shader-radios{
-    display: flex;
-    gap: 30px;
-  }
-
 }
 
-
-
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* MEDIA QUERIES */
 
-@media screen and (max-width: 600px) {
-  #gameText{
-     font-size: 15vw;
+@media screen and (max-height: 700px) and (min-width: 650px),
+  screen and (max-height: 500px) {
+  #gameText {
+    font-size: clamp(20px, 10dvh, 100px);
   }
-  #playButton{
-    font-size: 10vw;
+  #playButton {
+    font-size: clamp(20px, 10dvh, 100px);
   }
-  /* #timer{
-    font-size: 10vw;
-  } */
-  #audioButton{
-    /* font-size: 5vw; */
+  #timer {
+    font-size: clamp(20px, 8dvh, 100px);
   }
-}
-
-@media screen and (max-height: 600px) {
-  #gameText{
-     font-size: 10vh;
+  #audioButton {
+    font-size: clamp(20px, 7dvh, 100px);
+    margin-top: 0;
   }
-  #playButton{
-    font-size: 7vh;
+  #pauseButton {
+    font-size: clamp(20px, 12dvh, 100px);
   }
-  /* #timer{
-    font-size: 10vh;
-  } */
-  #audioButton{
-    /* font-size: 5vh; */
+  #settings-wrapper {
+    font-size: clamp(16px, 3dvh, 100px);
+  }
+  #fov-cont > span {
+    font-size: clamp(20px, 5.4dvh, 100px);
   }
 }
 

@@ -11,40 +11,42 @@
     <link rel="manifest" href="manifest.json">
   </head>
   <body>
-    <div id="frame" class="">
-      <span id="timer">0.00</span>
-      <button id="pauseButton">
-        <i class="bi-pause-fill" id="pause-icon"></i>
-      </button>
-      <div id="container">
-        <button id="audioButton">
-          <i class="bi-volume-up-fill" id="sound-on-icon"></i>
-          <i class="bi-volume-mute-fill" id="sound-off-icon"></i>
+    <div class="frame-wrapper">
+      <div id="frame" class="">
+        <span id="timer">0.00</span>
+        <button id="pauseButton">
+          <i class="bi-pause-fill" id="pause-icon"></i>
         </button>
-        <div id="gameText">Dino Game</div>
-        <button id="playButton" class="button">Play</button>
-        <div id="loader"></div>
-        <div id="settings-wrapper">
-          <div id="fov-cont">
-            <span>Field of View:</span>
-            <div class="fov-radios">
-              <div>
-                <input type="radio" id="fov-far" name="fov" value="far">
-                <label for="fov-far">Far</label>
-              </div>
-              <div>
-                <input type="radio" id="fov-normal" name="fov" value="normal" checked>
-                <label for="fov-normal">Normal</label>
-              </div>
-              <div>
-                <input type="radio" id="fov-close" name="fov" value="close">
-                <label for="fov-close">Close</label>
+        <div id="container">
+          <button id="audioButton">
+            <i class="bi-volume-up-fill" id="sound-on-icon"></i>
+            <i class="bi-volume-mute-fill" id="sound-off-icon"></i>
+          </button>
+          <div id="gameText">Dino Game</div>
+          <button id="playButton" class="button">Play</button>
+          <div id="loader"></div>
+          <div id="settings-wrapper">
+            <div class="shader-cont">
+              <input type="checkbox" id="shader" name="shader">
+              <label for="shader">Shader Switch</label>
+            </div>
+            <div id="fov-cont">
+              <span>Field of View:</span>
+              <div class="fov-radios">
+                <div>
+                  <input type="radio" id="fov-far" name="fov" value="far">
+                  <label for="fov-far">Far</label>
+                </div>
+                <div>
+                  <input type="radio" id="fov-normal" name="fov" value="normal" checked>
+                  <label for="fov-normal">Normal</label>
+                </div>
+                <div>
+                  <input type="radio" id="fov-close" name="fov" value="close">
+                  <label for="fov-close">Close</label>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="shader-cont">
-            <input type="checkbox" id="shader" name="shader">
-            <label for="shader">Shader Switch</label>
           </div>
         </div>
       </div>

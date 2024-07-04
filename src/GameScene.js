@@ -267,7 +267,7 @@ export default class GameScene extends THREE.Scene {
 
   genPlayerBoundingBox(){
     
-    const boundBoxPlr = new THREE.Box3().setFromObject(this.player.clone(), true);
+    const boundBoxPlr = new THREE.Box3().setFromObject(this.player.clone(), false);  // if true is used, poor performance
     //PLAYER (obj1)
     const shrinkVecPlayer = new THREE.Vector3(-0.1, -0.0, -0.2);
     boundBoxPlr.expandByVector(shrinkVecPlayer);  // shrink bounding box to make it more accurate
@@ -275,14 +275,14 @@ export default class GameScene extends THREE.Scene {
   }
 
   checkCollision({obj1Box, obj2}){
-    const boundBoxObst = new THREE.Box3().setFromObject(obj2.clone(), true); 
+    const boundBoxObst = new THREE.Box3().setFromObject(obj2.clone(), false);  // if true is used, poor performance
 
     // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
     // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
     
     //OBSTACLE (obj2)
-    // const shrinkVecObst = new THREE.Vector3(-0.05, -0, -0.05);
-    // boundBoxObst.expandByVector(shrinkVecObst); // shrink bounding box to make it more accurate
+    const shrinkVecObst = new THREE.Vector3(-0.1, -0, -0.1);
+    boundBoxObst.expandByVector(shrinkVecObst); // shrink bounding box to make it more accurate
     
     //because parent of obj2 is not groupAll but is a group of obstacles
     const center = boundBoxObst.getCenter(new THREE.Vector3());

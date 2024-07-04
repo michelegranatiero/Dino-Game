@@ -4,8 +4,8 @@
   "description": "Play and try to avoid obstacles.",
   "id": "/dinogame/",
   "start_url": "/dinogame/",
-  "background_color": "#778b62",
-  "theme_color": "#778b62",
+  "background_color": "#005b98",
+  "theme_color": "#005b98",
   "display": "standalone",
   "icons": [
     {
