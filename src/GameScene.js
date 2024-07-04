@@ -277,8 +277,8 @@ export default class GameScene extends THREE.Scene {
   checkCollision({obj1Box, obj2}){
     const boundBoxObst = new THREE.Box3().setFromObject(obj2.clone(), true); 
 
-    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
-    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
+    // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
+    // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
     
     //OBSTACLE (obj2)
     // const shrinkVecObst = new THREE.Vector3(-0.05, -0, -0.05);
