@@ -277,12 +277,12 @@ export default class GameScene extends THREE.Scene {
   checkCollision({obj1Box, obj2}){
     const boundBoxObst = new THREE.Box3().setFromObject(obj2.clone(), true); 
 
-    // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
-    // this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
+    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
+    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
     
     //OBSTACLE (obj2)
-    const shrinkVecObst = new THREE.Vector3(-0.05, -0, -0.05);
-    boundBoxObst.expandByVector(shrinkVecObst); // shrink bounding box to make it more accurate
+    // const shrinkVecObst = new THREE.Vector3(-0.05, -0, -0.05);
+    // boundBoxObst.expandByVector(shrinkVecObst); // shrink bounding box to make it more accurate
     
     //because parent of obj2 is not groupAll but is a group of obstacles
     const center = boundBoxObst.getCenter(new THREE.Vector3());
@@ -311,7 +311,7 @@ export default class GameScene extends THREE.Scene {
     obstBox.position.copy(localPosition);
     obstBox.position.y += 0.9;*/
 
-    if (obj1Box.intersectsBox(boundBoxObst)){
+    // if (obj1Box.intersectsBox(boundBoxObst)){
 
       /* //PLAYER (obj1)
       const sizePlr = obj1Box.getSize(new THREE.Vector3());
@@ -341,7 +341,7 @@ export default class GameScene extends THREE.Scene {
       helperObst.name = "obstBox"+obj2.uuid;
       this.groupAll.add(helperPlr);
       this.groupAll.add(helperObst);
-    }
+    // }
 
 
 
