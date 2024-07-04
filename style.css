@@ -178,6 +178,13 @@ canvas {
   width: 100%;
   gap: 1dvh;
   font-size: clamp(20px, (1.5dvh + 1dvw), 25px);
+
+  label {
+    padding: 4px 8px;
+    border-radius: clamp(0px, (0.7dvh + 8px), 100px);
+    cursor: pointer;
+    border: 0.3dvh solid white;
+  }
 }
 
 #fov-cont {
@@ -192,13 +199,6 @@ canvas {
   > span {
     font-size: clamp(35px, (3dvh + 1.5dvw), 40px);
     color: white;
-  }
-
-  label {
-    padding: 4px 8px;
-    border-radius: clamp(0px, (1.5dvh + 5px), 100px);
-    cursor: pointer;
-    border: 0.3dvh solid white;
   }
 
   input[type="radio"] {
@@ -218,13 +218,6 @@ canvas {
   padding: clamp(10px, 3dvh, 40px) clamp(10px, 3dvh, 40px);
   background-color: #ffffff37;
   border-radius: clamp(5px, (2dvh + 7px), 100px);
-
-  label {
-    padding: 4px 8px;
-    border-radius: clamp(0px, (1.5dvh + 5px), 100px);
-    cursor: pointer;
-    border: 0.3dvh solid white;
-  }
 
   input[type="checkbox"] {
     display: none;
