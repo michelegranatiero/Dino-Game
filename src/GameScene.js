@@ -311,7 +311,7 @@ export default class GameScene extends THREE.Scene {
     obstBox.position.copy(localPosition);
     obstBox.position.y += 0.9;*/
 
-    // if (obj1Box.intersectsBox(boundBoxObst)){
+    if (obj1Box.intersectsBox(boundBoxObst)){
 
       /* //PLAYER (obj1)
       const sizePlr = obj1Box.getSize(new THREE.Vector3());
@@ -341,7 +341,7 @@ export default class GameScene extends THREE.Scene {
       helperObst.name = "obstBox"+obj2.uuid;
       this.groupAll.add(helperPlr);
       this.groupAll.add(helperObst);
-    // }
+    }
 
 
 
