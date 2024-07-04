@@ -36,7 +36,6 @@ export default class GameScene extends THREE.Scene {
     this.savedElapsedTime = 0;
     this.planeSize = [10, 50];
     this.sceneRotates = false;
-    this.flag = true;
   }
 
   async initialize(camera, renderer) {
