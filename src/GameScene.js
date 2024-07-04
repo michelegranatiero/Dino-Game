@@ -9,17 +9,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import { RGBELoader } from "three/examples/jsm/Addons.js";
 
-import { OBB } from 'three/addons/math/OBB.js';
+import player_vs from './shaders/player_vShader.glsl';
+import player_fs from './shaders/player_fShader.glsl';
 
-import player_vs from './lib/player_vShader.glsl';
-import player_fs from './lib/player_fShader.glsl';
+import obstacle_vs from './shaders/obstacle_vShader.glsl';
+import obstacle_fs from './shaders/obstacle_fShader.glsl';
 
-import obstacle_vs from './lib/obstacle_vShader.glsl';
-import obstacle_fs from './lib/obstacle_fShader.glsl';
-
-import plane_vs from './lib/plane_vShader.glsl';
-import plane_fs from './lib/plane_fShader.glsl';
-import { EPSILON } from "three/examples/jsm/nodes/Nodes.js";
+import plane_vs from './shaders/plane_vShader.glsl';
+import plane_fs from './shaders/plane_fShader.glsl';
 
 
 export default class GameScene extends THREE.Scene {
@@ -28,15 +25,14 @@ export default class GameScene extends THREE.Scene {
     this.keyboard = {};
     this.gameState = "intro";
     this.lastSpawnTime = 0;
-    this.obstSpawnRate = 1; //seconds
-    this.playerSpeed = 10; //10
-    this.groundSpeed = 0.18; // 0.09
-    this.numObstaclesRow = 10; // 10
-    this.spaceWidth = 1; // 1
+    this.obstSpawnRate = 1;
+    this.playerSpeed = 10;
+    this.groundSpeed = 0.18;
+    this.numObstaclesRow = 10;
+    this.spaceWidth = 1;
     this.savedElapsedTime = 0;
     this.planeSize = [10, 50];
     this.sceneRotates = false;
-    this.flag = true;
   }
 
   async initialize(camera, renderer) {
@@ -49,7 +45,6 @@ export default class GameScene extends THREE.Scene {
     this.add(this.groupAll);
 
     this.camera.position.set(0, 3, 6);
-    // this.add(this.camera);
     this.groupAll.add(this.camera);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -66,8 +61,7 @@ export default class GameScene extends THREE.Scene {
     //LIGHTS
     this.light = new THREE.DirectionalLight(0xffffff, 2.0); //color, intensity
     this.light.position.set(20, 4, 16);
-    // this.light.position.set(2, 2, 0);
-    //enlarge shadow area of light
+    //enlarge shadow area for light
     this.light.shadow.camera.top = 20;
     this.light.shadow.camera.bottom = -20;
     this.light.shadow.camera.left = -20;
@@ -89,7 +83,7 @@ export default class GameScene extends THREE.Scene {
     
     //GROUND
     const groundText = new THREE.TextureLoader().load('textures/groundTextureCartoon.jpg');
-    groundText.colorSpace = THREE.LinearSRGBColorSpace;//////////////////////////////////////////
+    groundText.colorSpace = THREE.LinearSRGBColorSpace;
     
     const ratio = this.planeSize[1]/this.planeSize[0];
     this.repeatTextX = 2;
@@ -130,7 +124,7 @@ export default class GameScene extends THREE.Scene {
     //PLAYER OBJECT
     const dinoText = new THREE.TextureLoader().load('models/dinosaur/textures/Dino_baseColor.jpeg');
     dinoText.flipY = false; //needed for gltf models`
-    dinoText.colorSpace = THREE.SRGBColorSpace;//////////////////////////////////////////
+    dinoText.colorSpace = THREE.SRGBColorSpace;
     
 
     //player shaders uniforms
@@ -198,7 +192,6 @@ export default class GameScene extends THREE.Scene {
     }
     Events.guiVisibilityListener(this.gui, this.stats);
     Events.gamePausedListener(this); // listener for window visibility change
-    //this.gameState = "started"; // for debugging
 
   }
 
@@ -236,7 +229,6 @@ export default class GameScene extends THREE.Scene {
       //move position z of obstacles in sync with ground
       obstGroup.position.z += delta*this.groundSpeed * this.planeSize[1];
     }
-    
     if (elapsedTime - this.lastSpawnTime >= this.obstSpawnRate){  
       this.obstacles.push(this.spawnObstacleRow(this.cactus, this.numObstaclesRow));
       for (let obstGroup of this.obstacles){        
@@ -258,7 +250,6 @@ export default class GameScene extends THREE.Scene {
     this.obstacles.forEach((obstGroup) => {
       obstGroup.children.forEach((obst) => {
         if(this.checkCollision({obj1Box: plrBox, obj2: obst})){
-        // if(this.checkCollisionObb({obj1: this.player, obj2: obst})){
           Events.gameOver(this);
         }
       });
@@ -266,9 +257,7 @@ export default class GameScene extends THREE.Scene {
   }
 
   genPlayerBoundingBox(){
-    
     const boundBoxPlr = new THREE.Box3().setFromObject(this.player.clone(), false);  // if true is used, poor performance
-    //PLAYER (obj1)
     const shrinkVecPlayer = new THREE.Vector3(-0.1, -0.0, -0.2);
     boundBoxPlr.expandByVector(shrinkVecPlayer);  // shrink bounding box to make it more accurate
     return boundBoxPlr;
@@ -290,51 +279,8 @@ export default class GameScene extends THREE.Scene {
     let size = boundBoxObst.getSize(new THREE.Vector3());
     boundBoxObst.translate(posOffset.clone().sub(center).add(new THREE.Vector3(0, size.y / 2, 0)))
 
-
-
-
-    /*
-    const sizeObst = new THREE.Vector3();
-    boundBoxObst.getSize(sizeObst);
-    const geomObst = new THREE.BoxGeometry(sizeObst.x, sizeObst.y, sizeObst.z);
-    const matObst = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-    const obstBox = new THREE.Mesh(geomObst, matObst);
-    obstBox.name = "obstBox";
-    
-    // Convert to world coordinates (because obj2 parent is not groupAll)
-    const worldPosition = new THREE.Vector3();
-    obj2.getWorldPosition(worldPosition);
-
-    // Convert world coordinates to groupAll's local coordinates
-    const localPosition = new THREE.Vector3();
-    this.groupAll.worldToLocal(localPosition.copy(worldPosition));
-    obstBox.position.copy(localPosition);
-    obstBox.position.y += 0.9;*/
-
     if (obj1Box.intersectsBox(boundBoxObst)){
-
-      /* //PLAYER (obj1)
-      const sizePlr = obj1Box.getSize(new THREE.Vector3());
-      const geomPlr = new THREE.BoxGeometry(sizePlr.x, sizePlr.y, sizePlr.z);
-      const matPlr = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-      const plrBox = new THREE.Mesh(geomPlr, matPlr);
-      plrBox.name = "plrBox";
-      plrBox.position.copy(this.player.position);
-      plrBox.position.y += 0.2; 
-
-      //OBSTACLE (obj2)
-      const sizeObst = boundBoxObst.getSize(new THREE.Vector3());
-      const geomObst = new THREE.BoxGeometry(sizeObst.x, sizeObst.y, sizeObst.z);
-      const matObst = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});
-      const obstBox = new THREE.Mesh(geomObst, matObst);
-      obstBox.name = "obstBox"+obj2.uuid;
-      obstBox.position.copy(obj2.position.clone().add(obj2.parent.position.clone())
-        .add(new THREE.Vector3(0, size.y / 2, 0)));
-
-      this.groupAll.add(plrBox); 
-      this.groupAll.add(obstBox); */
-
-      //helpers 
+      // helpers boxes
       const helperPlr = new THREE.Box3Helper(obj1Box.clone(), 0xff0000);
       helperPlr.name = "plrBox";
       const helperObst = new THREE.Box3Helper(boundBoxObst, 0xff0000);
@@ -343,66 +289,8 @@ export default class GameScene extends THREE.Scene {
       this.groupAll.add(helperObst);
     }
 
-
-
     return obj1Box.intersectsBox(boundBoxObst);
   }
-
-  checkCollisionObb({obj1, obj2}) {
-
-    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "plrBox"));
-    this.groupAll.remove(this.groupAll.children.find((child) => child.name === "obstBox"+obj2.uuid));
-
-    //obj2
-    let geom2= obj2.geometry;
-    obj2.traverse((child) => {
-      if(child.isMesh){
-        geom2 = child.geometry.clone();
-        geom2.applyMatrix4(obj2.matrix)
-        // let pos = obj2.position.clone().add(obj2.parent.position.clone());
-        let pos = obj2.parent.position.clone();
-        geom2.translate(pos.x, pos.y, pos.z);
-        geom2.computeBoundingBox();
-      }
-    });
-    let boundingBox2 = new THREE.Box3().setFromObject(obj2);
-    const mesh2 = new THREE.Mesh( geom2, new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}));
-    // mesh2.applyMatrix4(obj2.matrix); //set position, rotation and scale of obj2
-    // mesh2.position.copy(obj2.position.clone().add(obj2.parent.position.clone())); //set position (because of obj2 parent)    
-    mesh2.geometry.userData.obb = new OBB().fromBox3(boundingBox2);
-    mesh2.name = "obstBox"+obj2.uuid;
-    // this.groupAll.add(mesh2)
-
-    //obj1
-    let geom1 = obj1.geometry;
-    obj1.traverse((child) => {
-      if(child.isMesh){
-        geom1 = child.geometry.clone();
-        geom1.scale(obj1.scale.x, obj1.scale.y, obj1.scale.z);
-        geom1.rotateX(-Math.PI/2).rotateY(obj1.rotation.y);
-        geom1.translate(obj1.position.x, obj1.position.y, obj1.position.z);
-
-        geom1.computeBoundingBox();
-      }
-    });
-    // return true;
-    let boundingBox1 = new THREE.Box3().setFromObject(obj1);
-    const mesh1 = new THREE.Mesh( geom1, new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true}));
-    mesh1.geometry.userData.obb = new OBB().fromBox3(boundingBox1);
-    mesh1.name = "plrBox";
-    // this.groupAll.add(mesh1)
-    if (mesh1.geometry.userData.obb.intersectsOBB(mesh2.geometry.userData.obb, Number.EPSILON)){
-      this.groupAll.add(mesh1);
-      this.groupAll.add(mesh2);
-      return true;
-    }
-
-
-
-
-    // return true;  
-  }
-
 
   
   movePlayer(delta){
@@ -434,7 +322,7 @@ export default class GameScene extends THREE.Scene {
   async loadCactus(){
     const cactusTexture = new THREE.TextureLoader().load('models/cactus/10436_Cactus_v1_Diffuse.jpg');
     cactusTexture.flipY = false; //needed for gltf models
-    cactusTexture.colorSpace = THREE.SRGBColorSpace;//////////////////////////////////////////
+    cactusTexture.colorSpace = THREE.SRGBColorSpace;
     
 
     const gltfLoader = new GLTFLoader();
@@ -448,7 +336,7 @@ export default class GameScene extends THREE.Scene {
       u_time: {value: this.clock.getElapsedTime()},
       u_texture: {type: 't', value: cactusTexture},
       shininess: {type: 'f', value: 2}, //0 to 100
-      lightDir: {type: 'v3', value: this.light.position}, //passed by reference.. so no need to update during time
+      lightDir: {type: 'v3', value: this.light.position},
       lightInt: {type: 'f', value: this.light.intensity*0.5},
       ambientInt: {type: 'f', value: this.ambientLight.intensity},
       specularInt: {type: 'f', value: 0.2}, //material property
@@ -484,7 +372,7 @@ export default class GameScene extends THREE.Scene {
     
     const startingPosX = this.plane.position.x-this.planeSize[0]/2;
     group.position.set(startingPosX, -0.5, -this.planeSize[1]/2);
-    //random number between 0 and numObstaclesRow (10 obstacles in total - the removed one)
+    //random number between 0 and numObstaclesRow+1 (11 obstacles in total - the removed one)
     const randInt = Math.floor(Math.random()*(numObstaclesRow+1));
     let correctSpace = this.spaceWidth;
     if (randInt == numObstaclesRow|| randInt == 0) correctSpace += boundBoxSize.z;
@@ -501,10 +389,6 @@ export default class GameScene extends THREE.Scene {
       c.rotation.z = Math.random()*Math.PI*2;
       c.rotation.y = Math.random()*Math.PI*0.08-0.08*2;
       group.add(c);
-      
-      /* const boxHelper = new THREE.BoxHelper(c, 0xff0000); // bounding box
-      this.add(boxHelper);
-      group.add(boxHelper); */
     }
     group.opacity = 0.1;
     this.groupAll.add(group);
@@ -561,7 +445,7 @@ export default class GameScene extends THREE.Scene {
           });
         });}
         this.plane.material = this.planeMatThree;
-      }else{/////////// ELSE
+      }else{/////////// ELSE /////////////
         this.player.traverse((child) => {
           if(child.isMesh){
             child.material = this.playerMat;

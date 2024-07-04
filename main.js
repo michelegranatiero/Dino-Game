@@ -13,8 +13,6 @@ renderer.setSize(width, height);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
-// renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-
 renderer.shadowMap.enabled = true;
 
 let scene;
