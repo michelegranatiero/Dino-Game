@@ -1,5 +1,5 @@
 # Dino Game
-###  Interactive Graphics Project - University of Rome La Sapienza
+###  Interactive Graphics Project - Sapienza University of Rome
 
 This project is built using Three.js and glsl code for shaders.
 Dino Game is a web based game, it is also available as a progressive web app. 
