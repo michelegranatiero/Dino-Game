@@ -7,6 +7,24 @@
   "background_color": "#005b98",
   "theme_color": "#005b98",
   "display": "standalone",
+  "screenshots": [
+    {
+      "src": "screenshots/screenshot1.png",
+      "sizes": "1080x2160",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshots/screenshot2.png",
+      "sizes": "1080x2160",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshots/screenshot3.png",
+      "sizes": "2012x1052",
+      "form_factor": "wide",
+      "type": "image/png"
+    }
+  ],
   "icons": [
     {
       "src": "icons/manifest-icon-192.maskable.png",

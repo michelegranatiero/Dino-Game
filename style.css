@@ -1,7 +1,7 @@
 @font-face {
   font-family: "Comic Neue";
-  src: url("/fonts/subset-ComicNeue-Bold.woff2") format("woff2"),
-    url("/fonts/subset-ComicNeue-Bold.woff") format("woff");
+  src: url("/dinogame/fonts/subset-ComicNeue-Bold.woff2") format("woff2"),
+    url("/dinogame/fonts/subset-ComicNeue-Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -18,6 +18,12 @@
   outline: none;
   touch-action: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.15);
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+  cursor: auto;
 }
 
 html,
@@ -224,6 +230,30 @@ canvas {
     &:checked + label {
       background-color: rgb(158, 185, 129);
     }
+  }
+}
+
+.donate-button-cont{
+  display: flex;
+  gap: 1dvh;
+}
+
+.donate-button{
+  box-shadow: 0px 0px 5px #000;
+  padding: 4px 8px;
+  background-color: #006fb9;
+  border-radius: clamp(5px, (2.5dvh + 10px), 100px);
+  white-space: nowrap;
+
+  border: 2px solid white;
+  cursor: pointer;
+  &:hover {
+    /* for mouse */
+    background-color: #00538a;
+  }
+  &.hovered {
+    /* for spacebar and enter keys*/
+    background-color: #00538a !important;
   }
 }
 

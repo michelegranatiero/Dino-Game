@@ -8,7 +8,6 @@ uniform vec2 u_repeatText;
 
 void main() {  
 
-  // vec2 coords = vec2(vUv.x, mod(vUv.y + u_time*u_speed,1.0)); //scrolling y first solution
   vec2 coords = vec2(vUv.x, vUv.y + u_time*u_speed); //scrolling y
 
   // repeat texture and keep uv coords in 0-1 range with fract (scale)

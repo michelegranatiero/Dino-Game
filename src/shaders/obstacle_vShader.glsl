@@ -4,7 +4,6 @@ varying vec3 normalInterp;
 varying vec3 posMV; //position in model view space (for computing camera direction in fragment shader)
 
 uniform float u_time;
-// uniform vec4 u_wasd;
 
 mat3 rotateX(float angle) {
   return mat3(
@@ -41,19 +40,16 @@ void main() {
   //posMV for computing camera direction in fragment shader
   posMV = (modelViewMatrix * vec4(position, 1.0)).xyz;
 
-
-
   //HERE X IS LEFT, Y IS DEPTH FACING SCREEN,Z IS UP
   //movement
-  float oscillationX = 0.4 * sin(u_time * 2.0); // Speed can be adjusted by changing the multiplier
   vec3 startPosition = vec3(
-      position.x /* + oscillationX *(1.0) */ + exp2(0.015*position.z)*sin(u_time*10.0)*1.0, 
+      position.x + exp2(0.015*position.z)*sin(u_time*10.0)*1.0, 
       position.y , 
       position.z 
   );
 
   //rotate
-  vec3 endPosition = /* rotateY(oscillationX) * */ startPosition;
+  vec3 endPosition = startPosition;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(endPosition, 1.0);
   
 
