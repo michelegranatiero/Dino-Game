@@ -285,8 +285,8 @@ export default class GameScene extends THREE.Scene {
       helperPlr.name = "plrBox";
       const helperObst = new THREE.Box3Helper(boundBoxObst, 0xff0000);
       helperObst.name = "obstBox"+obj2.uuid;
-      this.groupAll.add(helperPlr);
-      this.groupAll.add(helperObst);
+      // this.groupAll.add(helperPlr);
+      // this.groupAll.add(helperObst);
     }
 
     return obj1Box.intersectsBox(boundBoxObst);
