@@ -62,6 +62,8 @@ window.addEventListener("resize", () => {
 
 // play button listeners
 document.getElementById("playButton").onclick = async() => {
+      document.getElementById("playButton").disabled = false;
+  if (!["ready", "gameover", "paused"].includes(scene.gameState)) return;
   audio.currentTime = 0;
   audio.pause();
   if (!audioContext){
