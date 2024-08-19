@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "vite": "^5.2.0",
-    "vite-plugin-pwa": "^0.20.0"
+    "vite-plugin-pwa": "^0.20.1"
   },
   "dependencies": {
     "dat.gui": "^0.7.9",

@@ -10,6 +10,15 @@ export default defineConfig({
     glsl(),
     VitePWA({
       registerType: 'auto-update',
+      // add this to cache all the imports
+      workbox: {
+        globPatterns: ["**/*"],
+      },
+      // add this to cache all the
+      // static assets in the public folder
+      includeAssets: [
+        "**/*",
+      ],
       manifest: manifest
     })
   ],
